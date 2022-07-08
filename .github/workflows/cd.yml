@@ -40,9 +40,16 @@ jobs:
     - name: Checkout source
       uses: actions/checkout@v3
     - name: Prepare package content
+      run: mkdir -pv package
+    - name: Transform module definition
       run: |
-        mkdir -pv package
-        cp -v locenv-module.yml package
+        require 'yaml'
+
+        mod = YAML.load_file('locenv-module.yml')
+        mod['version'] = Integer(ENV['GITHUB_REF_NAME'])
+
+        File.open('package/locenv-module.yml', 'w') { |f| f.write mod.to_yaml.gsub("---\n", '') }
+      shell: ruby {0}
     - name: Download Linux binary
       uses: actions/download-artifact@v3
       with:
