@@ -1,0 +1,6 @@
+name: autoconf
+version: 0
+program:
+  linux: libautoconf.so
+  darwin: libautoconf.dylib
+  win32: autoconf.dll
